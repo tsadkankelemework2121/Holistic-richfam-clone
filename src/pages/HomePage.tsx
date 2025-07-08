@@ -4,6 +4,7 @@ import CenterSection from "../components/home/center-section"
 import ContactSection from "../components/home/contact-section"
 import EventsSection from "../components/home/events-section"
 import Hero from "../components/home/hero-section"
+import MembershipSection from "../components/home/membership-section"
 import SupportSection from "../components/home/support-section"
 
 
@@ -11,13 +12,13 @@ const HomePage = () => {
   return (
     <div>
     <Hero />
-     {/* <AboutSection />
+     <AboutSection />
      <CenterSection />
      <SupportSection />
      <EventsSection />
      <BlogSection />
-      */}
-  <ContactSection />
+     <MembershipSection />
+    <ContactSection />
     </div>
   )
 }

@@ -1,7 +1,5 @@
 import React from "react"
-import image1 from "../../assets/image6.png"
-import image2 from "../../assets/image7.png"
-import image3 from "../../assets/image8.png"
+
 
 const ChildDevelopmentSection = () => {
   const blogs = [
@@ -10,21 +8,21 @@ const ChildDevelopmentSection = () => {
       title: "Play-Based Learning at Richfam Child Care",
       description:
         "Children learn best through play, as it provides a natural and enjoyable way to explore, experiment, and grow.",
-      image: image1.src,
+      image: "/image6.png",
     },
     {
       id: "child-communication",
       title: "Child Communication Through Playing",
       description:
         "Interactive games boost early language skills, helping children develop fluency and communication through engaging play.",
-      image: image2.src,
+      image:"/image7.png" ,
     },
     {
       id: "emotional-intelligence",
       title: "The Role of Play in Emotional Intelligence",
       description:
         "Games aid and guide about fun and play are powerful tools for teaching children how to navigate emotions.",
-      image: image3.src,
+      image: "/image8.png",
     },
   ]
 

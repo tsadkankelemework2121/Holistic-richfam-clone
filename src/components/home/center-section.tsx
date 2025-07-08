@@ -1,29 +1,25 @@
 import React from 'react';
 
-import image2 from "../../assets/image2.png"
 
-import image3 from "../../assets/image3.png"
-
-import image4 from "../../assets/image4.png"
 const CenterSection = () => {
   const activities = [
     {
       title: "Soft Block Building (Age 1-3)",
       description:
         "Toddlers use soft, foam blocks to build structures. This activity enhances problem-solving as they figure out how to stack blocks without them toppling over. It also introduces basic concepts like balance, shapes, and sizes.",
-      image: image2,
+      image: "/image2.png",
     },
     {
       title: "Interactive Laser Tag (Ages 6-8)",
       description:
         "A fun, social game where kids wear sensor vests and use laser guns to tag each other in a designated area. The game encourages teamwork, communication, and strategy as players work together to 'tag' opponents while avoiding being tagged themselves.",
-      image: image3,
+      image: "/image3.png",
     },
     {
       title: "Interactive Gaming (Age 9-12)",
       description:
         "Digital games with interactive touches encourage healthy competition and peer engagement, teaching sportsmanship and mutual respect. These games provide a fun and immersive way for participants to learn teamwork and cooperation.",
-      image: image4,
+      image:"/image4.png",
     },
   ];
 
@@ -46,7 +42,7 @@ const CenterSection = () => {
             <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg">
               <div className="aspect-video">
                 <img
-                  src={activity.image.src}
+                  src={activity.image}
                   alt={activity.title}
                   className="w-full h-full object-cover"
                 />

@@ -1,12 +1,12 @@
 import React from "react"
-import image1 from "../../assets/image1.png"
+
 
 const AboutSection = () => {
   return (
     <section className="flex flex-col md:flex-row items-center justify-center px-6 md:px-20 py-12 gap-8 bg-white">
       <div className="w-full md:w-1/2 flex justify-center">
         <img
-          src={image1.src}
+          src="/image1.png"
           alt="Children Group"
           className="w-[585px] h-[403px] object-contain"
         />

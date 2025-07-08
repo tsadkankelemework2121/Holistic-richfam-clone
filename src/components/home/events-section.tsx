@@ -1,6 +1,5 @@
 import React from "react"
-// import image from "../../assets/image5.png"
-// import image1 from "./src/assets/image5."
+
 
 const EventsSection = () => {
   return (

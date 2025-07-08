@@ -1,5 +1,5 @@
 import React from "react"
-import supportImage from "../../assets/image9.png"
+
 
 const SupportSection = () => {
   return (
@@ -34,7 +34,7 @@ const SupportSection = () => {
           <div className="flex-shrink-0">
             <div className="w-64 h-48">
               <img
-                src={supportImage.src}
+                src="/image9.png"
                 alt="Children playing together"
                 className="w-full h-full object-cover rounded-lg"
               />
