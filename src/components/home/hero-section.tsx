@@ -19,10 +19,11 @@ const HeroSection = () => {
 
           <div className="mb-6">
             <input
-              type="text"
-              placeholder="Search..."
-              className="w-full max-w-md px-6 py-4 rounded-full text-gray-700 text-lg border-none outline-none"
-            />
+  type="text"
+  placeholder="Search..."
+  className="w-full max-w-md px-6 py-4 rounded-full text-gray-700 text-lg border-none outline-none bg-white hover:bg-yellow-400/40 transition-colors"
+/>
+
           </div>
 
           <button className="bg-[#FDD835] text-black px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-400 transition-colors">
@@ -49,7 +50,7 @@ const HeroSection = () => {
 
       <div className="absolute left-[810px] top-[78px]">
         <img
-          src="/hero.png"
+          src="/buildingimage.png"
           alt="Gaming Facility"
           className="w-[600px] h-[340px] object-cover rounded-lg shadow-xl"
         />

@@ -1,9 +1,9 @@
 
 const ContactSection=()=> {
   return (
-    <section className="px-6 py-12 bg-blue-50" id="contact">
+    <section className="px-6 py-12 bg-white" id="contact">
       <div className="max-w-4xl mx-auto text-center">
-        <p className="text-lg text-gray-700 leading-relaxed mb-8">
+        <p className="text-lg text-gray-700 leading-relaxed mb-10">
           We'd love to hear from you! Whether you're interested in learning more about our programs, joining our
           mission, or supporting our initiative, feel free to get in touch.
         </p>

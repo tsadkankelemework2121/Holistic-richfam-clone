@@ -28,14 +28,14 @@ const ChildDevelopmentSection = () => {
 
   return (
     <section className="py-16 px-6 bg-[#F6F6F6]">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[1306px] h-[570px] mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-[#1E3A8A] text-left mb-8">
           Child Development Tips
         </h2>
 
         {/* White container wrapping all cards */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="grid md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-lg shadow-md w-full h-full">
+          <div className="grid md:grid-cols-3 gap-[65px]">
             {blogs.map((blog) => (
               <div
                 key={blog.id}
