@@ -2,32 +2,28 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Navbar from "./layout/Navbar"
 import Footer from "./layout/Footer"
 import HomePage from "./pages/HomePage"
-// import GamesPage from "./pages/GamesPage"
-// import BlogsPage from "./pages/BlogsPage"
 import AboutPage from "./pages/AboutPage"
-import MembershipsPage from "./pages/MembershipsPage"
 import EventsPage from "./pages/EventsPage"
+import EventDetailPage from "./pages/EventDetailPage"
+//import BlogsPage from "./pages/BlogsPage"
+//import GamesPage from "./pages/GamesPage"
+import MembershipsPage from "./pages/MembershipsPage"
+import "./App.css"
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
+      <div className="App">
         <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            
-            <Route path="/events" element={<EventsPage/>} />
-            <Route path="/memberships" element={<MembershipsPage/>} />
-
-            {/* <Route path="/blogs" element={<BlogsPage />} />
-            <Route path="/games" element={<GamesPage />} />
-           */}
-
-          </Routes>
-        </main>
-        <Footer /> 
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:id" element={<EventDetailPage />} />
+    
+          <Route path="/memberships" element={<MembershipsPage />} />
+        </Routes>
+           <Footer />
       </div>
     </Router>
   )

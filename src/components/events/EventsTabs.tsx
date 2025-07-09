@@ -1,15 +1,19 @@
 "use client"
+
 import { useState } from "react"
-import EventCard from "./EventCard"
+import EventCard, { type Event } from "./EventCard" // Import Event from EventCard
 import RegistrationModal from "./RegistrationModal"
-import e1 from '../../assets/e1.png'
-import e2 from '../../assets/e2.png'
 
 interface EventsTabsProps {
   activeTab: string
+  events: Event[]
+  isLoading: boolean
+  isError: boolean
+  error: unknown
+  refetch: () => void
 }
 
-const EventsTabs = ({ activeTab }: EventsTabsProps) => {
+const EventsTabs = ({ activeTab, events, isLoading, isError, error, refetch }: EventsTabsProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState("")
 
@@ -18,107 +22,75 @@ const EventsTabs = ({ activeTab }: EventsTabsProps) => {
     setIsModalOpen(true)
   }
 
-  // Event data arrays
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: "Greetings from RICHFAM - Holistic Child Development Center!",
-      date: "Saturday, December 16, 2024 (starting 10:00 AM)",
-      location: "RICHFAM Center, Addis Ababa",
-      description: "We are excited to invite you and your family to PLAYFUL MINDS, a vibrant celebration of fun and learning through play!",
-      highlights: [
-        "Interactive Games & Role Plays: Explore over 150 activities designed to boost creativity and problem-solving skills.",
-        "Kids' Learning Zone: Fun educational stations focusing on language, math, and motor skills development.",
-      ],
-      image: e1, // Removed .src
-      bgColor: "from-teal-400 to-cyan-500",
-      titleColor: "text-blue-900",
-    },
-    {
-      id: 2,
-      title: "You're Invited to RICHFAM's Family Adventure Day! 🎉",
-      date: "Saturday, December 16, 2024 (starting 10:00 AM)",
-      location: "RICHFAM Center, Addis Ababa, Addis Ababa",
-      description:
-        "Discover a day of excitement, bonding, and growth with your family at RICHFAM. Our workshop is designed to bring families closer through shared experiences that are as fun as they are meaningful!",
-      highlights: [
-        "What's Waiting for You:",
-        "Interactive Family Challenges: Work together to solve puzzles, build structures, and compete in games that boost teamwork and communication.",
-        "Creative Play Stations: Explore hands-on activities like arts and crafts, DIY workshops, and storytelling sessions that spark imagination for all ages.",
-        "Parent-Child...",
-      ],
-      image: e2, // Removed .src
-      bgColor: "from-blue-600 to-purple-600",
-      titleColor: "text-white",
-    },
-    // ... other upcoming events
-  ]
-
-  const workshopEvents = [
-    {
-      id: 3,
-      title: "Creative Arts Workshop for Kids",
-      date: "Sunday, December 17, 2024 (starting 2:00 PM)",
-      location: "RICHFAM Art Studio, Addis Ababa",
-      description: "Join us for an exciting creative arts workshop where children can explore their artistic talents.",
-      highlights: [
-        "Painting & Drawing Sessions: Learn basic techniques and create beautiful artwork.",
-        "Craft Making: Build fun projects using recycled materials.",
-      ],
-      image: "/placeholder.svg?height=200&width=300",
-      bgColor: "from-purple-400 to-pink-500",
-      titleColor: "text-white",
-    },
-    // ... other workshop events
-  ]
-
-  const specialPrograms = [
-    {
-      id: 5,
-      title: "Holiday Celebration Extravaganza",
-      date: "Friday, December 22, 2024 (starting 4:00 PM)",
-      location: "RICHFAM Main Hall, Addis Ababa",
-      description: "Join us for a magical holiday celebration filled with music, dance, and games.",
-      highlights: [
-        "Live Performances: Music and dance shows by local artists.",
-        "Holiday Games: Traditional and modern games for the whole family.",
-      ],
-      image: "/placeholder.svg?height=200&width=300",
-      bgColor: "from-red-400 to-orange-500",
-      titleColor: "text-white",
-    },
-    // ... other special programs
-  ]
-
   const getCurrentEvents = () => {
     switch (activeTab) {
       case "workshops":
-        return workshopEvents
+        return events.filter(
+          (e) => e.title.toLowerCase().includes("workshop") || e.intro.toLowerCase().includes("workshop"),
+        )
       case "special":
-        return specialPrograms
+        return events.filter(
+          (e) =>
+            e.title.toLowerCase().includes("holiday") ||
+            e.title.toLowerCase().includes("special") ||
+            e.intro.toLowerCase().includes("holiday") ||
+            e.intro.toLowerCase().includes("special"),
+        )
       default:
-        return upcomingEvents
+        return events
     }
   }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <section className="py-12 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <p className="ml-4 text-gray-600">Loading events...</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // Error state
+  if (isError) {
+    return (
+      <section className="py-12 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <p className="text-red-600 mb-4">
+              Error loading events: {error instanceof Error ? error.message : "Failed to fetch events"}
+            </p>
+            <button onClick={() => refetch()} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  const filteredEvents = getCurrentEvents()
 
   return (
     <section className="py-12 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {filteredEvents.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-600">No events found for the selected category.</p>
+          </div>
+        )}
         <div className="space-y-6">
-          {getCurrentEvents().map((event) => (
-            <EventCard 
-              key={event.id}
-              event={event}
-              onBookNow={() => handleBookNow(event.title)}
-            />
+          {filteredEvents.map((event) => (
+            <EventCard key={event.id} event={event} onBookNow={() => handleBookNow(event.title)} />
           ))}
         </div>
       </div>
-      <RegistrationModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        eventTitle={selectedEvent}
-      />
+
+      <RegistrationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} eventTitle={selectedEvent} />
     </section>
   )
 }
