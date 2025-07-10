@@ -1,7 +1,21 @@
-"use client"
-import { useState, useEffect } from "react"
-import { X, CheckCircle, AlertCircle } from "lucide-react"
-import api from "../../api/api"
+"use client";
+import { useState, useEffect } from "react";
+import { X, CheckCircle, AlertCircle } from "lucide-react";
+import api from "../../api/api";
+
+const postMembership = async (membershipData) => {
+  try {
+    const response = await api.post("/membership/register", membershipData);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error posting membership:", error);
+    if (error.response) {
+      console.error("📋 Error status:", error.response.status);
+      console.error("📋 Error data:", error.response.data);
+    }
+    throw error;
+  }
+};
 
 const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
   const [formData, setFormData] = useState({
@@ -12,39 +26,46 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
     profession: "",
     membership_package: selectedPackage,
     message: "",
-  })
+  });
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({
     type: null,
     message: "",
-  })
-  const [packageError, setPackageError] = useState("")
+  });
+  const [packageError, setPackageError] = useState("");
 
   // Valid package values
-  const validPackages = ["one-month plan", "three-month plan", "six-month plan", "annual plan"]
+  const validPackages = [
+    "one-month plan",
+    "three-month plan",
+    "six-month plan",
+    "annual plan",
+  ];
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
 
     // Clear status messages when user types
     if (submitStatus.type === "error") {
-      setSubmitStatus({ type: null, message: "" })
+      setSubmitStatus({ type: null, message: "" });
     }
 
     // Validate package field
     if (name === "membership_package") {
       if (value && !validPackages.includes(value.toLowerCase())) {
-        setPackageError("Please enter one of: one-month plan, three-month plan, six-month plan, annual plan")
+        setPackageError(
+          "Please enter one of: one-month plan, three-month plan, six-month plan, annual plan"
+        );
       } else {
-        setPackageError("")
+        setPackageError("");
       }
     }
-  }
+  };
 
   const resetForm = () => {
     setFormData({
@@ -55,24 +76,26 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
       profession: "",
       membership_package: selectedPackage,
       message: "",
-    })
-    setSubmitStatus({ type: null, message: "" })
-    setPackageError("")
-  }
+    });
+    setSubmitStatus({ type: null, message: "" });
+    setPackageError("");
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Validate package before submission
     if (!validPackages.includes(formData.membership_package.toLowerCase())) {
-      setPackageError("Please enter a valid package: one-month plan, three-month plan, six-month plan, or annual plan")
-      return
+      setPackageError(
+        "Please enter a valid package: one-month plan, three-month plan, six-month plan, or annual plan"
+      );
+      return;
     }
 
-    setIsLoading(true)
-    setSubmitStatus({ type: null, message: "" })
-    setPackageError("")
-    console.log("Registration form submission started")
+    setIsLoading(true);
+    setSubmitStatus({ type: null, message: "" });
+    setPackageError("");
+    console.log("Registration form submission started");
 
     try {
       const payload = {
@@ -83,78 +106,84 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
         profession: formData.profession,
         membership_package: formData.membership_package.toLowerCase(),
         message: formData.message,
-      }
+      };
 
-      console.log("Submitting registration data:", payload)
+      console.log("Submitting registration data:", payload);
 
-      const response = await api.post("/membership/register", payload)
-      const result = response.data
-      console.log("API Response:", result)
+      const response = await postMembership(payload);
+      const result = response;
+      console.log("API Response:", result);
 
       setSubmitStatus({
         type: "success",
         message: "Registration submitted successfully! We'll contact you soon.",
-      })
+      });
 
       setTimeout(() => {
-        resetForm()
-      }, 3000)
+        resetForm();
+      }, 3000);
     } catch (error) {
-      console.error("Error in registration submission:", error)
+      console.error("Error in registration submission:", error);
 
-      let errorMessage = "Failed to submit registration"
+      let errorMessage = "Failed to submit registration";
 
       if (error.response) {
         if (error.response.status === 404) {
-          errorMessage = "Registration endpoint not found. Please contact support."
+          errorMessage =
+            "Registration endpoint not found. Please contact support.";
         } else if (error.response.status === 422) {
-          const validationErrors = error.response.data?.errors
+          const validationErrors = error.response.data?.errors;
           if (validationErrors) {
             if (validationErrors.membership_package) {
-              errorMessage = `Invalid membership package. ${validationErrors.membership_package[0]}`
+              errorMessage = `Invalid membership package. ${validationErrors.membership_package[0]}`;
             } else {
-              const firstError = Object.values(validationErrors)[0]
-              errorMessage = Array.isArray(firstError) ? firstError[0] : firstError
+              const firstError = Object.values(validationErrors)[0];
+              errorMessage = Array.isArray(firstError)
+                ? firstError[0]
+                : firstError;
             }
           } else {
-            errorMessage = error.response.data?.message || "Validation failed"
+            errorMessage = error.response.data?.message || "Validation failed";
           }
         } else if (error.response.status === 500) {
-          errorMessage = "Server error. Please try again later."
+          errorMessage = "Server error. Please try again later.";
         } else {
-          errorMessage = error.response.data?.message || `Server error: ${error.response.status}`
+          errorMessage =
+            error.response.data?.message ||
+            `Server error: ${error.response.status}`;
         }
       } else if (error.request) {
-        errorMessage = "No response from server. Please check your internet connection."
+        errorMessage =
+          "No response from server. Please check your internet connection.";
       } else {
-        errorMessage = error.message || "An unexpected error occurred"
+        errorMessage = error.message || "An unexpected error occurred";
       }
 
       setSubmitStatus({
         type: "error",
         message: errorMessage,
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleClose = () => {
     if (!isLoading) {
-      resetForm()
-      onClose()
+      resetForm();
+      onClose();
     }
-  }
+  };
 
   // Update form data when selectedPackage changes
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
       membership_package: selectedPackage,
-    }))
-  }, [selectedPackage])
+    }));
+  }, [selectedPackage]);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
@@ -194,7 +223,10 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Full name
               </label>
               <input
@@ -210,7 +242,10 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Phone
               </label>
               <input
@@ -226,7 +261,10 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Email
               </label>
               <input
@@ -242,7 +280,10 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
             </div>
 
             <div>
-              <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="address"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Address
               </label>
               <input
@@ -258,7 +299,10 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
             </div>
 
             <div>
-              <label htmlFor="profession" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="profession"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Profession
               </label>
               <input
@@ -274,7 +318,10 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
             </div>
 
             <div>
-              <label htmlFor="membership_package" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="membership_package"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Package
               </label>
               <input
@@ -292,14 +339,22 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
                 required
                 disabled={isLoading}
               />
-              {packageError && <p className="text-sm text-red-600 mt-2 font-medium">{packageError}</p>}
+              {packageError && (
+                <p className="text-sm text-red-600 mt-2 font-medium">
+                  {packageError}
+                </p>
+              )}
               <p className="text-xs text-gray-500 mt-2">
-                Valid options: one-month plan, three-month plan, six-month plan, annual plan
+                Valid options: one-month plan, three-month plan, six-month plan,
+                annual plan
               </p>
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="message"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Message
               </label>
               <textarea
@@ -325,9 +380,13 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
               submitStatus.type === "success"
                 ? "bg-green-500 hover:bg-green-600 text-white"
                 : submitStatus.type === "error"
-                  ? "bg-red-500 hover:bg-red-600 text-white"
-                  : "bg-yellow-400 hover:bg-yellow-500 text-gray-900"
-            } ${isLoading || packageError ? "opacity-70 cursor-not-allowed" : "hover:scale-[1.02] active:scale-[0.98]"}`}
+                ? "bg-red-500 hover:bg-red-600 text-white"
+                : "bg-yellow-400 hover:bg-yellow-500 text-gray-900"
+            } ${
+              isLoading || packageError
+                ? "opacity-70 cursor-not-allowed"
+                : "hover:scale-[1.02] active:scale-[0.98]"
+            }`}
           >
             {isLoading ? (
               <>
@@ -351,7 +410,7 @@ const RegistrationModal = ({ isOpen, onClose, selectedPackage }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RegistrationModal
+export default RegistrationModal;

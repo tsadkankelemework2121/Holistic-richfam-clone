@@ -1,5 +1,4 @@
-"use client"
-import about from "../../assets/about.webp";
+
 import { useState, useEffect } from "react"
 
 const AboutHero = () => {
@@ -9,7 +8,7 @@ const AboutHero = () => {
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
       <div className="absolute inset-0">
         <img
-          src={about || "/placeholder.svg"}
+          src={"/about.webp"}
           alt="Happy children at RICHFAM"
           className="w-full h-full object-cover opacity-90"
         />

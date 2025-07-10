@@ -1,4 +1,3 @@
-
 interface EventsHeroProps {
   activeTab: string
   setActiveTab: (tab: string) => void

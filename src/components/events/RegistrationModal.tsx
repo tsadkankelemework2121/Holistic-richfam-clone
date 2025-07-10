@@ -1,10 +1,40 @@
-"use client"
-import { useState } from "react"
-import { X } from "lucide-react"
-import api from "../../api/api"
+"use client";
+import { useState } from "react";
+import { X } from "lucide-react";
+import api from "../../api/api";
 
-const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
-  const [formData, setFormData] = useState({
+interface RegistrationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  eventTitle: string;
+}
+
+interface FormData {
+  fullName: string;
+  phone: string;
+  email: string;
+  address: string;
+  profession: string;
+  package: string;
+  message: string;
+}
+
+const postMembership = async (membershipData) => {
+  try {
+    const response = await api.post("/membership", membershipData);
+    return response.data;
+  } catch (error) {
+    console.error("Error posting membership:", error);
+    throw error;
+  }
+};
+
+const RegistrationModal = ({
+  isOpen,
+  onClose,
+  eventTitle,
+}: RegistrationModalProps) => {
+  const [formData, setFormData] = useState<FormData>({
     fullName: "",
     phone: "",
     email: "",
@@ -12,44 +42,28 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
     profession: "",
     package: "",
     message: "",
-  })
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
-  // Post membership function defined here
-  const postMembership = async (membershipData) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
     try {
-      const response = await api.post("/membership", membershipData)
-      return response.data
-    } catch (error) {
-      console.error("Error posting membership:", error)
-      throw error
-    }
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
-    try {
-      // Add event title to form data
       const submissionData = {
         ...formData,
         eventTitle: eventTitle,
-      }
-
-      await postMembership(submissionData)
-      console.log("Registration submitted successfully:", submissionData)
-
-      // Reset form
+      };
+      await postMembership(submissionData);
       setFormData({
         fullName: "",
         phone: "",
@@ -58,19 +72,18 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
         profession: "",
         package: "",
         message: "",
-      })
-
-      alert("Registration submitted successfully!")
-      onClose()
+      });
+      alert("Registration submitted successfully!");
+      onClose();
     } catch (error) {
-      console.error("Error submitting registration:", error)
-      alert("Failed to submit registration. Please try again.")
+      console.error("Error submitting registration:", error);
+      alert("Failed to submit registration. Please try again.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -78,15 +91,23 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
         <div className="p-6">
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Register for {eventTitle}</h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Register for {eventTitle}
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
               <X className="w-6 h-6" />
             </button>
           </div>
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Full name
               </label>
               <input
@@ -100,7 +121,10 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
               />
             </div>
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Phone
               </label>
               <input
@@ -114,7 +138,10 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Email
               </label>
               <input
@@ -128,7 +155,10 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
               />
             </div>
             <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Address
               </label>
               <input
@@ -142,7 +172,10 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
               />
             </div>
             <div>
-              <label htmlFor="profession" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="profession"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Profession
               </label>
               <input
@@ -156,7 +189,10 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
               />
             </div>
             <div>
-              <label htmlFor="package" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="package"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Package
               </label>
               <input
@@ -170,7 +206,10 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
               />
             </div>
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Message
               </label>
               <textarea
@@ -193,7 +232,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RegistrationModal
+export default RegistrationModal;

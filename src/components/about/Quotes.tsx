@@ -1,27 +1,23 @@
-import abImg from "../../assets/abrham.png"
-import alImg from "../../assets/albert.png"
-import mImg from "../../assets/mandela.png"
-
 const AboutQuotes = () => {
   const quotes = [
     {
       quote: "The best way to predict the future is to create it.",
       author: "Abraham Lincoln",
-      image: abImg, // Remove .src - abImg is already a string
+      image: "/abrham.png", // Remove .src - abImg is already a string
       description:
         "RICHFAM believes in empowering all children, including those with disabilities, to shape their futures through creativity and participation.",
     },
     {
       quote: "Play is the highest form of research.",
       author: "Albert Einstein",
-      image: alImg, // Remove .src - alImg is already a string
+      image: "/albert.png", // Remove .src - alImg is already a string
       description:
         "We recognize that play is essential for all children's growth. It fuels curiosity and innovation, allowing every child to learn and discover their potential.",
     },
     {
       quote: "Education is the most powerful weapon which you can use to change the world.",
       author: "Nelson Mandela",
-      image: mImg, // Remove .src - mImg is already a string
+      image: "/mandela.png", // Remove .src - mImg is already a string
       description:
         "RICHFAM is built on transformative education that nurtures the growth of all children, fostering global citizens who lead with empathy and purpose.",
     },

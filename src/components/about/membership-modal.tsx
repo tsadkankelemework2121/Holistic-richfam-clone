@@ -1,13 +1,27 @@
-"use client"
-import type React from "react"
-import { useState } from "react"
-import { X, CheckCircle, AlertCircle } from "lucide-react"
-import { postMembership } from "../../api/api"
+"use client";
+import type React from "react";
+import { useState } from "react";
+import { X, CheckCircle, AlertCircle } from "lucide-react";
+import api from "../../api/api";
 
 interface MembershipModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
+
+const postMembership = async (membershipData: any) => {
+  try {
+    const response = await api.post("/membership/register", membershipData);
+    return response.data;
+  } catch (error: any) {
+    console.error("❌ Error posting membership:", error);
+    if (error.response) {
+      console.error("📋 Error status:", error.response.status);
+      console.error("📋 Error data:", error.response.data);
+    }
+    throw error;
+  }
+};
 
 const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
   const [formData, setFormData] = useState({
@@ -18,13 +32,13 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
     profession: "",
     membership_package: "one-month plan", // Set to first valid option
     message: "",
-  })
+  });
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null
-    message: string
-  }>({ type: null, message: "" })
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
 
   // Updated with the exact values your backend expects
   const membershipPlans = [
@@ -32,18 +46,22 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
     { value: "three-month plan", label: "Three-Month Plan" },
     { value: "six-month plan", label: "Six-Month Plan" },
     { value: "annual plan", label: "Annual Plan" },
-  ]
+  ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
     if (submitStatus.type === "error") {
-      setSubmitStatus({ type: null, message: "" })
+      setSubmitStatus({ type: null, message: "" });
     }
-  }
+  };
 
   const resetForm = () => {
     setFormData({
@@ -54,15 +72,15 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
       profession: "",
       membership_package: "one-month plan",
       message: "",
-    })
-    setSubmitStatus({ type: null, message: "" })
-  }
+    });
+    setSubmitStatus({ type: null, message: "" });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setSubmitStatus({ type: null, message: "" })
-    console.log("Form submission started")
+    e.preventDefault();
+    setIsLoading(true);
+    setSubmitStatus({ type: null, message: "" });
+    console.log("Form submission started");
 
     try {
       const payload = {
@@ -73,83 +91,90 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
         profession: formData.profession,
         membership_package: formData.membership_package,
         message: formData.message,
-      }
+      };
 
-      console.log("Submitting membership data:", payload)
+      console.log("Submitting membership data:", payload);
 
       // Use the postMembership function from your API file
-      const result = await postMembership(payload)
-      console.log("API Response:", result)
+      const result = await postMembership(payload);
+      console.log("API Response:", result);
 
       // Set success status with a more visible message
-      const successMessage = "Membership application submitted successfully! We'll contact you soon."
-      console.log("Setting success status:", successMessage)
+      const successMessage =
+        "Membership application submitted successfully! We'll contact you soon.";
+      console.log("Setting success status:", successMessage);
       setSubmitStatus({
         type: "success",
         message: successMessage,
-      })
+      });
 
       // Don't reset form immediately so user can see what they submitted
       setTimeout(() => {
-        resetForm()
+        resetForm();
         // Don't close automatically - let user close it
-      }, 5000)
+      }, 5000);
     } catch (error: any) {
-      console.error("Error in submission:", error)
+      console.error("Error in submission:", error);
 
-      let errorMessage = "Failed to submit membership application"
+      let errorMessage = "Failed to submit membership application";
 
       if (error.response) {
-        console.log("Error response status:", error.response.status)
-        console.log("Error response data:", error.response.data)
+        console.log("Error response status:", error.response.status);
+        console.log("Error response data:", error.response.data);
 
         // Server responded with error status
         if (error.response.status === 404) {
-          errorMessage = "Membership endpoint not found. Please contact support."
+          errorMessage =
+            "Membership endpoint not found. Please contact support.";
         } else if (error.response.status === 422) {
           // Validation errors
-          const validationErrors = error.response.data?.errors
+          const validationErrors = error.response.data?.errors;
           if (validationErrors) {
             // Handle membership_package specific error
             if (validationErrors.membership_package) {
-              errorMessage = `Invalid membership package. ${validationErrors.membership_package[0]}`
+              errorMessage = `Invalid membership package. ${validationErrors.membership_package[0]}`;
             } else {
-              const firstError = Object.values(validationErrors)[0]
-              errorMessage = Array.isArray(firstError) ? firstError[0] : firstError
+              const firstError = Object.values(validationErrors)[0];
+              errorMessage = Array.isArray(firstError)
+                ? firstError[0]
+                : firstError;
             }
           } else {
-            errorMessage = error.response.data?.message || "Validation failed"
+            errorMessage = error.response.data?.message || "Validation failed";
           }
         } else if (error.response.status === 500) {
-          errorMessage = "Server error. Please try again later."
+          errorMessage = "Server error. Please try again later.";
         } else {
-          errorMessage = error.response.data?.message || `Server error: ${error.response.status}`
+          errorMessage =
+            error.response.data?.message ||
+            `Server error: ${error.response.status}`;
         }
       } else if (error.request) {
-        errorMessage = "No response from server. Please check your internet connection."
+        errorMessage =
+          "No response from server. Please check your internet connection.";
       } else {
-        errorMessage = error.message || "An unexpected error occurred"
+        errorMessage = error.message || "An unexpected error occurred";
       }
 
-      console.log("Setting error status:", errorMessage)
+      console.log("Setting error status:", errorMessage);
       setSubmitStatus({
         type: "error",
         message: errorMessage,
-      })
+      });
     } finally {
-      setIsLoading(false)
-      console.log("Form submission completed")
+      setIsLoading(false);
+      console.log("Form submission completed");
     }
-  }
+  };
 
   const handleClose = () => {
     if (!isLoading) {
-      resetForm()
-      onClose()
+      resetForm();
+      onClose();
     }
-  }
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -181,14 +206,19 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
               ) : (
                 <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
               )}
-              <span className="text-base font-semibold">{submitStatus.message}</span>
+              <span className="text-base font-semibold">
+                {submitStatus.message}
+              </span>
             </div>
           )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Full name *
               </label>
               <input
@@ -204,7 +234,10 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Phone *
               </label>
               <input
@@ -220,7 +253,10 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Email *
               </label>
               <input
@@ -236,7 +272,10 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
             </div>
 
             <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Address *
               </label>
               <input
@@ -252,7 +291,10 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
             </div>
 
             <div>
-              <label htmlFor="profession" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="profession"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Profession *
               </label>
               <input
@@ -268,7 +310,10 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
             </div>
 
             <div>
-              <label htmlFor="membership_package" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="membership_package"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Membership Plan *
               </label>
               <div className="relative">
@@ -288,15 +333,28 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
                   ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </div>
               </div>
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-900 mb-2">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
                 Message
               </label>
               <textarea
@@ -318,8 +376,8 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
                 submitStatus.type === "success"
                   ? "bg-green-500 hover:bg-green-600 text-white"
                   : submitStatus.type === "error"
-                    ? "bg-red-500 hover:bg-red-600 text-white"
-                    : "bg-yellow-400 hover:bg-yellow-500 text-gray-900"
+                  ? "bg-red-500 hover:bg-red-600 text-white"
+                  : "bg-yellow-400 hover:bg-yellow-500 text-gray-900"
               } ${isLoading ? "opacity-70 cursor-not-allowed" : ""}`}
             >
               {isLoading ? (
@@ -345,12 +403,14 @@ const MembershipModal = ({ isOpen, onClose }: MembershipModalProps) => {
 
           {/* Additional info */}
           <div className="mt-4 text-center">
-            <p className="text-xs text-gray-500">* Required fields. We'll contact you within 24 hours.</p>
+            <p className="text-xs text-gray-500">
+              * Required fields. We'll contact you within 24 hours.
+            </p>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MembershipModal
+export default MembershipModal;

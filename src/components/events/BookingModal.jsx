@@ -2,6 +2,24 @@
 import { useState } from "react"
 import { X, CheckCircle, AlertCircle } from "lucide-react"
 import api from "../../api/api"
+import PropTypes from "prop-types"
+
+const postBooking = async (bookingData) => {
+  try {
+    console.log("🚀 Posting booking to: /bookings");
+    console.log("📊 Payload:", bookingData);
+    const response = await api.post("/bookings", bookingData);
+    console.log("✅ Booking response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error posting booking:", error);
+    if (error.response) {
+      console.error("📋 Error status:", error.response.status);
+      console.error("📋 Error data:", error.response.data);
+    }
+    throw error;
+  }
+};
 
 const BookingModal = ({ isOpen, onClose, event }) => {
   const [formData, setFormData] = useState({
@@ -66,7 +84,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
 
       console.log("🚀 Submitting booking:", payload)
 
-      const response = await api.post("/bookings", payload)
+      const response = await postBooking(payload)
       console.log("✅ Booking response:", response.data)
 
       setSubmitStatus({
@@ -318,6 +336,12 @@ const BookingModal = ({ isOpen, onClose, event }) => {
       </div>
     </div>
   )
+}
+
+BookingModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  event: PropTypes.object,
 }
 
 export default BookingModal
