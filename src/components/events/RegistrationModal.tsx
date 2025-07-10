@@ -1,17 +1,9 @@
 "use client"
-
-import type React from "react"
-
 import { useState } from "react"
 import { X } from "lucide-react"
+import api from "../../api/api"
 
-interface RegistrationModalProps {
-  isOpen: boolean
-  onClose: () => void
-  eventTitle: string
-}
-
-const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalProps) => {
+const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -22,7 +14,9 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
     message: "",
   })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -30,11 +24,50 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Post membership function defined here
+  const postMembership = async (membershipData) => {
+    try {
+      const response = await api.post("/membership", membershipData)
+      return response.data
+    } catch (error) {
+      console.error("Error posting membership:", error)
+      throw error
+    }
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log("Registration submitted:", formData)
-    onClose()
+    setIsSubmitting(true)
+
+    try {
+      // Add event title to form data
+      const submissionData = {
+        ...formData,
+        eventTitle: eventTitle,
+      }
+
+      await postMembership(submissionData)
+      console.log("Registration submitted successfully:", submissionData)
+
+      // Reset form
+      setFormData({
+        fullName: "",
+        phone: "",
+        email: "",
+        address: "",
+        profession: "",
+        package: "",
+        message: "",
+      })
+
+      alert("Registration submitted successfully!")
+      onClose()
+    } catch (error) {
+      console.error("Error submitting registration:", error)
+      alert("Failed to submit registration. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (!isOpen) return null
@@ -45,12 +78,11 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
         <div className="p-6">
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Register now</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Register for {eventTitle}</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
               <X className="w-6 h-6" />
             </button>
           </div>
-
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -67,7 +99,6 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
                 required
               />
             </div>
-
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-900 mb-2">
                 Phone
@@ -82,7 +113,6 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
                 required
               />
             </div>
-
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-2">
                 Email
@@ -97,7 +127,6 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
                 required
               />
             </div>
-
             <div>
               <label htmlFor="address" className="block text-sm font-medium text-gray-900 mb-2">
                 Address
@@ -112,7 +141,6 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
                 required
               />
             </div>
-
             <div>
               <label htmlFor="profession" className="block text-sm font-medium text-gray-900 mb-2">
                 Profession
@@ -127,7 +155,6 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
                 required
               />
             </div>
-
             <div>
               <label htmlFor="package" className="block text-sm font-medium text-gray-900 mb-2">
                 Package
@@ -142,7 +169,6 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
                 required
               />
             </div>
-
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-gray-900 mb-2">
                 Message
@@ -156,12 +182,12 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }: RegistrationModalPro
                 className="w-full px-4 py-3 bg-gray-100 border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
               />
             </div>
-
             <button
               type="submit"
-              className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-4 rounded-full transition-colors shadow-lg hover:shadow-xl"
+              disabled={isSubmitting}
+              className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-4 rounded-full transition-colors shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Register now
+              {isSubmitting ? "Registering..." : "Register now"}
             </button>
           </form>
         </div>

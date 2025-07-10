@@ -1,14 +1,14 @@
-"use client"
-import girlImg from "../../assets/leftgirl.webp"
-import monImg from "../../assets/monster.webp"
-import eventbackImg from "../../assets/eventback.webp"
-import rockyImg from "../../assets/rocket.webp"
-import giftImg from "../../assets/gift.webp"
-import bubbleImg from "../../assets/bubble.webp"
+"use client";
+import girlImg from "../../assets/leftgirl.webp";
+import monImg from "../../assets/monster.webp";
+import eventbackImg from "../../assets/eventback.webp";
+import rockyImg from "../../assets/rocket.webp";
+import giftImg from "../../assets/gift.webp";
+import bubbleImg from "../../assets/bubble.webp";
 
 interface EventsHeroProps {
-  activeTab: string
-  setActiveTab: (tab: string) => void
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
 const EventsHero = ({ activeTab, setActiveTab }: EventsHeroProps) => {
@@ -19,40 +19,56 @@ const EventsHero = ({ activeTab, setActiveTab }: EventsHeroProps) => {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src={eventbackImg || "/placeholder.svg"}
+            src={eventbackImg || "/placeholder.svg"}  // Removed .src
             alt="Happy children at RICHFAM"
             className="w-full h-full object-cover opacity-90"
           />
         </div>
-
+        
         {/* Cartoon Characters - Left */}
         <div className="absolute left-[5%] bottom-0 w-1/4 max-w-[200px] h-[85vh]">
           <img
-            src={girlImg || "/placeholder.svg"}
+            src={girlImg || "/placeholder.svg"}  // Removed .src
             alt="Cartoon character"
             className="w-full h-full object-contain object-left-bottom"
           />
         </div>
-
+             
         {/* Cartoon Characters - Right */}
         <div className="absolute right-0 bottom-0 w-1/4 max-w-xs h-auto">
-          <img src={monImg || "/placeholder.svg"} alt="Cartoon character" className="w-full h-auto" />
+          <img
+            src={monImg || "/placeholder.svg"}  // Removed .src
+            alt="Cartoon character"
+            className="w-full h-auto"
+          />
         </div>
-
+        
         {/* Rocket Image - Bottom Right - Larger Size with Increased Opacity */}
         <div className="absolute right-[30%] -bottom-[14%] w-[40%] min-w-[150px] max-w-[300px] z-20">
-          <img src={rockyImg || "/placeholder.svg"} alt="Rocket" className="w-full h-auto animate-float opacity-100" />
+          <img
+            src={rockyImg || "/placeholder.svg"}  // Removed .src
+            alt="Rocket"
+            className="w-full h-auto animate-float opacity-100"
+          />
         </div>
-
+           
         {/* gift Image - Bottom Right - Larger Size with Increased Opacity */}
         <div className="absolute right-[50%] bottom-[59%] w-[15%] min-w-[150px] max-w-[300px] z-20">
-          <img src={giftImg || "/placeholder.svg"} alt="Gift" className="w-full h-auto animate-float opacity-100" />
+          <img
+            src={giftImg || "/placeholder.svg"}  // Removed .src
+            alt="Gift"
+            className="w-full h-auto animate-float opacity-100"
+          />
         </div>
-
+        
         <div className="absolute right-[60%] bottom-[45%] w-[6%] min-w-[80px] max-w-[120px] z-20">
-          <img src={bubbleImg || "/placeholder.svg"} alt="Bubble" className="w-full h-auto animate-float opacity-100" />
+          <img
+            src={bubbleImg || "/placeholder.svg"}  // Removed .src
+            alt="Bubble"
+            className="w-full h-auto animate-float opacity-100"
+          />
         </div>
-
+        
         {/* Content Container */}
         <div className="relative z-10 h-full flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
@@ -60,14 +76,12 @@ const EventsHero = ({ activeTab, setActiveTab }: EventsHeroProps) => {
               Exciting Events for Every <br /> Child!
             </h1>
             <p className="text-lg md:text-xl text-white max-w-3xl mx-auto">
-              At RICHFAM, we offer a variety of events designed to engage, inspire, and support children's development.
-              From hands-on workshops to seasonal celebrations, each event is crafted to provide fun and learning
-              opportunities for kids of all ages.
+              At RICHFAM, we offer a variety of events designed to engage, inspire, and support children's development. From hands-on workshops to seasonal celebrations, each event is crafted to provide fun and learning opportunities for kids of all ages.
             </p>
           </div>
         </div>
       </section>
-
+      
       {/* Full-width Tab Container */}
       <div className="w-full bg-white py-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -106,7 +120,7 @@ const EventsHero = ({ activeTab, setActiveTab }: EventsHeroProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EventsHero
+export default EventsHero;

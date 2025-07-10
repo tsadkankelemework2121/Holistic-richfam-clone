@@ -1,8 +1,8 @@
 "use client"
-
 import { useState } from "react"
-import EventCard, { type Event } from "./EventCard" // Import Event from EventCard
+import EventCard from "./EventCard"
 import RegistrationModal from "./RegistrationModal"
+import type { Event } from "../../api/api"
 
 interface EventsTabsProps {
   activeTab: string
@@ -89,7 +89,6 @@ const EventsTabs = ({ activeTab, events, isLoading, isError, error, refetch }: E
           ))}
         </div>
       </div>
-
       <RegistrationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} eventTitle={selectedEvent} />
     </section>
   )

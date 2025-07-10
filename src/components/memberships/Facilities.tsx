@@ -3,6 +3,7 @@ import gamingAreasImg from "../../assets/gaming-areas.png";
 import learningProgramsImg from "../../assets/gaming-areas.png";
 import familyServicesImg from "../../assets/gaming-areas.png";
 
+
 const MembershipsFacilities = () => {
   return (
     <section className="py-20 bg-gray-50">
@@ -13,7 +14,7 @@ const MembershipsFacilities = () => {
             {/* Left Image Placeholder */}
             <div className="relative h-80 rounded-3xl overflow-hidden">
               <img 
-                src={safeFacilitiesImg.src} 
+                src={safeFacilitiesImg} 
                 alt="Safe and family friendly facilities" 
                 className="w-full h-full object-cover"
               />
@@ -77,7 +78,7 @@ const MembershipsFacilities = () => {
             {/* Right Image Placeholder */}
             <div className="relative h-80 rounded-3xl overflow-hidden">
               <img 
-                src={gamingAreasImg.src} 
+                src={gamingAreasImg} 
                 alt="Gaming and play areas" 
                 className="w-full h-full object-cover"
               />
@@ -91,7 +92,7 @@ const MembershipsFacilities = () => {
             {/* Left Image Placeholder */}
             <div className="relative h-80 rounded-3xl overflow-hidden">
               <img 
-                src={learningProgramsImg.src} 
+                src={learningProgramsImg} 
                 alt="Learning and development programs" 
                 className="w-full h-full object-cover"
               />
@@ -153,7 +154,7 @@ const MembershipsFacilities = () => {
             {/* Right Image Placeholder */}
             <div className="relative h-80 rounded-3xl overflow-hidden">
               <img 
-                src={familyServicesImg.src} 
+                src={familyServicesImg} 
                 alt="Comprehensive family services" 
                 className="w-full h-full object-cover"
               />

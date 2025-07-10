@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useParams, useNavigate } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
-import { Calendar, MapPin, ArrowLeft, Clock, Users } from "lucide-react"
-import { fetchEventById } from "../api/eventsApi"
-import type { Event } from "../components/events/EventCard"
+import { useParams, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { Calendar, MapPin, ArrowLeft, Clock, Users } from "lucide-react";
+import { fetchEventById } from "../api/api";
+import type { Event } from "../components/events/EventCard";
 
 const EventDetailPage = () => {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const {
     data: event,
@@ -19,40 +19,46 @@ const EventDetailPage = () => {
     queryKey: ["event", id],
     queryFn: () => fetchEventById(id!),
     enabled: !!id,
-  })
+  });
 
   // Date formatting logic
   const formatDate = (dateString: string) => {
     try {
-      const date = new Date(dateString)
+      const date = new Date(dateString);
       return date.toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
         weekday: "long",
-      })
+      });
     } catch {
-      return "Date TBD"
+      return "Date TBD";
     }
-  }
+  };
 
   const formatTime = (dateString: string) => {
     try {
-      const date = new Date(dateString)
+      const date = new Date(dateString);
       return date.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
-      })
+      });
     } catch {
-      return "Time TBD"
+      return "Time TBD";
     }
-  }
+  };
 
   // Color generation logic
   const getBgColor = (id: number) => {
-    const colors = ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-red-500", "bg-yellow-500"]
-    return colors[id % colors.length]
-  }
+    const colors = [
+      "bg-blue-500",
+      "bg-green-500",
+      "bg-purple-500",
+      "bg-red-500",
+      "bg-yellow-500",
+    ];
+    return colors[id % colors.length];
+  };
 
   // Loading state
   if (isLoading) {
@@ -63,7 +69,7 @@ const EventDetailPage = () => {
           <p className="ml-4 text-gray-600">Loading event details...</p>
         </div>
       </div>
-    )
+    );
   }
 
   // Error state
@@ -72,7 +78,8 @@ const EventDetailPage = () => {
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 mb-4">
-            Error loading event: {error instanceof Error ? error.message : "Event not found"}
+            Error loading event:{" "}
+            {error instanceof Error ? error.message : "Event not found"}
           </p>
           <button
             onClick={() => navigate("/events")}
@@ -82,7 +89,7 @@ const EventDetailPage = () => {
           </button>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -105,14 +112,18 @@ const EventDetailPage = () => {
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           {/* Hero Image Section */}
           <div className="relative h-96">
-            <div className={`${getBgColor(event.id)} w-full h-full relative overflow-hidden`}>
+            <div
+              className={`${getBgColor(
+                event.id
+              )} w-full h-full relative overflow-hidden`}
+            >
               {event.image ? (
                 <img
-                  src={event.image || "/placeholder.svg"}
+                  src={`http://192.168.100.36:8000/storage/${event.image}`}
                   alt={event.title}
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.currentTarget.style.display = "none"
+                    e.currentTarget.style.display = "none";
                   }}
                 />
               ) : (
@@ -124,7 +135,9 @@ const EventDetailPage = () => {
               <div className="absolute inset-0 bg-black bg-opacity-30"></div>
               {/* Title overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-8">
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{event.title}</h1>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                  {event.title}
+                </h1>
               </div>
             </div>
           </div>
@@ -134,17 +147,23 @@ const EventDetailPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Main Content */}
               <div className="lg:col-span-2">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Event</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  About This Event
+                </h2>
                 <div className="prose prose-lg text-gray-700 mb-8">
                   <p className="leading-relaxed">{event.intro}</p>
 
                   {/* Additional content sections */}
                   <div className="mt-8">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">What to Expect</h3>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                      What to Expect
+                    </h3>
                     <ul className="space-y-2">
                       <li className="flex items-start">
                         <span className="font-bold text-blue-600 mr-2">•</span>
-                        <span>Interactive sessions and networking opportunities</span>
+                        <span>
+                          Interactive sessions and networking opportunities
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <span className="font-bold text-blue-600 mr-2">•</span>
@@ -166,14 +185,18 @@ const EventDetailPage = () => {
               {/* Sidebar */}
               <div className="lg:col-span-1">
                 <div className="bg-gray-50 rounded-xl p-6 sticky top-8">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6">Event Details</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">
+                    Event Details
+                  </h3>
 
                   <div className="space-y-4">
                     <div className="flex items-start">
                       <Calendar className="w-5 h-5 text-blue-600 mr-3 mt-1" />
                       <div>
                         <p className="font-semibold text-gray-900">Date</p>
-                        <p className="text-gray-600">{formatDate(event.created_at)}</p>
+                        <p className="text-gray-600">
+                          {formatDate(event.created_at)}
+                        </p>
                       </div>
                     </div>
 
@@ -181,7 +204,9 @@ const EventDetailPage = () => {
                       <Clock className="w-5 h-5 text-blue-600 mr-3 mt-1" />
                       <div>
                         <p className="font-semibold text-gray-900">Time</p>
-                        <p className="text-gray-600">{formatTime(event.created_at)}</p>
+                        <p className="text-gray-600">
+                          {formatTime(event.created_at)}
+                        </p>
                       </div>
                     </div>
 
@@ -211,11 +236,19 @@ const EventDetailPage = () => {
 
                   {/* Share Section */}
                   <div className="mt-6 pt-6 border-t border-gray-200">
-                    <p className="text-sm font-semibold text-gray-900 mb-3">Share this event</p>
+                    <p className="text-sm font-semibold text-gray-900 mb-3">
+                      Share this event
+                    </p>
                     <div className="flex space-x-3">
-                      <button className="text-blue-600 hover:text-blue-800 text-sm">Facebook</button>
-                      <button className="text-blue-400 hover:text-blue-600 text-sm">Twitter</button>
-                      <button className="text-blue-700 hover:text-blue-900 text-sm">LinkedIn</button>
+                      <button className="text-blue-600 hover:text-blue-800 text-sm">
+                        Facebook
+                      </button>
+                      <button className="text-blue-400 hover:text-blue-600 text-sm">
+                        Twitter
+                      </button>
+                      <button className="text-blue-700 hover:text-blue-900 text-sm">
+                        LinkedIn
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -225,7 +258,7 @@ const EventDetailPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EventDetailPage
+export default EventDetailPage;

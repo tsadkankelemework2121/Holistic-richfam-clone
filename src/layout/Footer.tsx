@@ -16,13 +16,13 @@ const Footer = () => {
           {/* Left Section - Company Info */}
           <div className="lg:col-span-1 md:pr-4 lg:pr-12 relative">
             {/* Background decorative element */}
-            <div className="absolute -top-12 md:-top-16 -left-6 md:-left-8 z-0">
-              <img
-                src={backImg || "/placeholder.svg"}
-                alt="Background Decoration"
-                className="w-30 md:w-30 h-25 md:h-25 object-contain opacity-80"
-              />
-            </div>
+<div className="absolute -top-[30%] -left-[25%] z-0">
+  <img
+    src={backImg || "/placeholder.svg"}
+    alt="Background Decoration"
+    className="w-[500px] md:w-[900px] h-[375px] md:h-[675px] object-contain opacity-80"
+  />
+</div>
             <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 md:mb-10 tracking-tight leading-none relative z-10">
               RICHFAM
             </h3>
@@ -167,18 +167,18 @@ const Footer = () => {
       </div>
 
       {/* Decorative Elements */}
-      <div className="hidden sm:block absolute -top-6 left-1/2 transform -translate-x-[125%]">
-        <img
-          src={confImg || "/placeholder.svg"}
-          alt="Party Hat"
-          className="w-24 md:w-32 lg:w-40 h-auto object-contain drop-shadow-lg"
-        />
-      </div>
+     <div className="hidden sm:block absolute -top-4 left-1/2 transform -translate-x-[125%]">
+  <img
+    src={confImg || "/placeholder.svg"}
+    alt="Party Hat"
+    className="w-24 md:w-32 lg:w-40 h-auto object-contain drop-shadow-lg"
+  />
+</div>
       <div className="hidden sm:block absolute bottom-16 left-1/2 transform -translate-x-[125%]">
         <img
           src={rockImg || "/placeholder.svg"}
           alt="Rocket"
-          className="w-24 md:w-32 lg:w-40 h-auto object-contain drop-shadow-lg"
+          className="w-24 md:w-32 lg:w-40 h-auto object-contain drop-shadow-lg opacity-100"
         />
       </div>
       <div className="hidden sm:block absolute bottom-20 right-4">
@@ -210,3 +210,8 @@ const Footer = () => {
 }
 
 export default Footer
+
+
+
+
+

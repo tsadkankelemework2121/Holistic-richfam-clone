@@ -1,13 +1,17 @@
-import backgroundImg from "../../assets/memback.png";
+import back from "../../assets/memback.png";
 
 const MembershipsHero = () => {
   return (
     <section className="relative h-[80vh] w-full overflow-hidden">
       {/* Background Image - Fixed to screen size */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${backgroundImg.src})` }}
-      ></div>
+  
+  <div className="absolute inset-0">
+           <img
+             src={back || "/placeholder.svg"}  // Removed .src
+             alt="Happy children at RICHFAM"
+             className="w-full h-full object-cover opacity-90"
+           />
+         </div>
       
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
