@@ -1,70 +1,53 @@
-"use client";
-import type React from "react";
-import { Calendar, MapPin } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import type { Event } from "../../api/api";
+"use client"
+import { Calendar, MapPin } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
-interface EventCardProps {
-  event: Event;
-  onBookNow: () => void;
-}
-
-const EventCard = ({ event, onBookNow }: EventCardProps) => {
-  const navigate = useNavigate();
+const EventCard = ({ event, onBookNow }) => {
+  const navigate = useNavigate()
 
   // Date formatting logic
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString) => {
     try {
-      const date = new Date(dateString);
+      const date = new Date(dateString)
       return date.toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
-      });
+      })
     } catch {
-      return "Date TBD";
+      return "Date TBD"
     }
-  };
+  }
 
   // Color generation logic
-  const getBgColor = (id: number) => {
-    const colors = [
-      "bg-blue-500",
-      "bg-green-500",
-      "bg-purple-500",
-      "bg-red-500",
-      "bg-yellow-500",
-    ];
-    return colors[id % colors.length];
-  };
+  const getBgColor = (id) => {
+    const colors = ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-red-500", "bg-yellow-500"]
+    return colors[id % colors.length]
+  }
 
   // Image error handling
-  const handleImageError = (
-    e: React.SyntheticEvent<HTMLImageElement, Event>
-  ) => {
-    console.error("Failed to load image:", event.image);
-    e.currentTarget.style.display = "none";
-  };
+  const handleImageError = (e) => {
+    e.target.src = "/placeholder.svg" // Fallback to placeholder
+    e.target.onerror = null // Prevent infinite loop
+  }
 
   // Navigate to detail page
   const handleSeeMore = () => {
-    navigate(`/events/${event.id}`);
-  };
+    navigate(`/events/${event.id}`)
+  }
 
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
         <div className="lg:col-span-1">
-          <div
-            className={`${getBgColor(
-              event.id
-            )} h-full min-h-[300px] relative overflow-hidden`}
-          >
+          <div className={`${getBgColor(event.id)} h-full min-h-[300px] relative overflow-hidden`}>
             {event.image ? (
               <img
                 src={`http://192.168.100.36:8000/storage/${event.image}`}
                 alt={event.title}
                 className="w-full h-full object-cover"
+                onError={handleImageError}
+                loading="lazy" // Add lazy loading
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-white text-xl font-bold">
@@ -74,9 +57,7 @@ const EventCard = ({ event, onBookNow }: EventCardProps) => {
           </div>
         </div>
         <div className="lg:col-span-2 p-8">
-          <h3 className="text-2xl font-bold text-blue-900 mb-4">
-            {event.title}
-          </h3>
+          <h3 className="text-2xl font-bold text-blue-900 mb-4">{event.title}</h3>
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 text-gray-600">
             <div className="flex items-center">
               <Calendar className="w-5 h-5 mr-2 text-blue-600" />
@@ -87,13 +68,9 @@ const EventCard = ({ event, onBookNow }: EventCardProps) => {
               <span>{event.location}</span>
             </div>
           </div>
-          {/* Truncated intro text */}
           <p className="text-gray-700 mb-6 leading-relaxed">
-            {event.intro.length > 150
-              ? `${event.intro.substring(0, 150)}...`
-              : event.intro}
+            {event.intro?.length > 150 ? `${event.intro.substring(0, 150)}...` : event.intro}
           </p>
-          {/* Updated button section with See More and Book Now */}
           <div className="flex justify-between items-center">
             <button
               onClick={handleSeeMore}
@@ -111,7 +88,7 @@ const EventCard = ({ event, onBookNow }: EventCardProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default EventCard;
+export default EventCard

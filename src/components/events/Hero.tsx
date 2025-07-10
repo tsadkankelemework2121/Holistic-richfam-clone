@@ -1,4 +1,4 @@
-"use client"
+
 import girlImg from "../../assets/leftgirl.webp"
 import monImg from "../../assets/monster.webp"
 import eventbackImg from "../../assets/eventback.webp"

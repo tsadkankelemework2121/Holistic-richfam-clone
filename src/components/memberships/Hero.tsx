@@ -1,4 +1,5 @@
-import back from "../../assets/memback.png";
+import back from "../../assets/memback.webp";
+
 
 const MembershipsHero = () => {
   return (
@@ -12,6 +13,8 @@ const MembershipsHero = () => {
              className="w-full h-full object-cover opacity-90"
            />
          </div>
+
+      
       
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>

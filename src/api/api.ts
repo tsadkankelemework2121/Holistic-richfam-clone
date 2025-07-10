@@ -7,19 +7,8 @@ const api = axios.create({
   },
 })
 
-// Event interface
-export interface Event {
-  id: number
-  title: string
-  image: string
-  intro: string
-  location: string
-  created_at: string
-  updated_at: string
-}
-
 // Fetch events function
-export const fetchEvents = async (): Promise<Event[]> => {
+export const fetchEvents = async () => {
   try {
     const response = await api.get("/event")
     return response.data
@@ -29,8 +18,40 @@ export const fetchEvents = async (): Promise<Event[]> => {
   }
 }
 
+// Fetch events by category
+export const fetchEventsByCategory = async (category) => {
+  try {
+    let endpoint = ""
+    switch (category) {
+      case "upcoming":
+        endpoint = "/event/category/upcoming-event"
+        break
+      case "workshops":
+        endpoint = "/event/category/workshop"
+        break
+      case "special":
+        endpoint = "/event/category/special-program"
+        break
+      default:
+        endpoint = "/event/category/upcoming-event"
+    }
+
+    console.log(`Making API call to: ${api.defaults.baseURL}${endpoint}`)
+    const response = await api.get(endpoint)
+    console.log(`API response for ${category}:`, response.data)
+    return response.data
+  } catch (error) {
+    console.error(`Error fetching ${category} events from ${endpoint}:`, error)
+    if (error.response) {
+      console.error("Response status:", error.response.status)
+      console.error("Response data:", error.response.data)
+    }
+    throw error
+  }
+}
+
 // Post membership function
-export const postMembership = async (membershipData: any) => {
+export const postMembership = async (membershipData) => {
   try {
     const response = await api.post("/membership/register", membershipData)
     return response.data
@@ -40,8 +61,8 @@ export const postMembership = async (membershipData: any) => {
   }
 }
 
-// Fetch single event by ID - Fixed with proper TypeScript typing
-export const fetchEventById = async (id: string): Promise<Event> => {
+// Fetch single event by ID
+export const fetchEventById = async (id) => {
   try {
     const response = await api.get(`/event/${id}`)
     return response.data
@@ -52,7 +73,7 @@ export const fetchEventById = async (id: string): Promise<Event> => {
 }
 
 // Additional API functions you might need
-export const postEventRegistration = async (registrationData: any) => {
+export const postEventRegistration = async (registrationData) => {
   try {
     const response = await api.post("/event-registration", registrationData)
     return response.data
@@ -65,7 +86,7 @@ export const postEventRegistration = async (registrationData: any) => {
 // Fetch memberships
 export const fetchMemberships = async () => {
   try {
-    const response = await api.get("/membership/register")
+    const response = await api.get("/membership")
     return response.data
   } catch (error) {
     console.error("Error fetching memberships:", error)
