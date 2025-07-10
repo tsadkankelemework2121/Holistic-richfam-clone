@@ -1,11 +1,4 @@
 
-import girlImg from "../../assets/leftgirl.webp"
-import monImg from "../../assets/monster.webp"
-import eventbackImg from "../../assets/eventback.webp"
-import rockyImg from "../../assets/rocket.webp"
-import giftImg from "../../assets/gift.webp"
-import bubbleImg from "../../assets/bubble.webp"
-
 interface EventsHeroProps {
   activeTab: string
   setActiveTab: (tab: string) => void
@@ -15,11 +8,11 @@ const EventsHero = ({ activeTab, setActiveTab }: EventsHeroProps) => {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative h-[75vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-cyan-400 to-green-400">
+      <section className="relative h-[65vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-cyan-400 to-green-400">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src={eventbackImg || "/placeholder.svg"}
+            src={"/eventback.webp"}
             alt="Happy children at RICHFAM"
             className="w-full h-full object-cover opacity-90"
           />
@@ -28,7 +21,7 @@ const EventsHero = ({ activeTab, setActiveTab }: EventsHeroProps) => {
         {/* Cartoon Characters - Left */}
         <div className="absolute left-[5%] bottom-0 w-1/4 max-w-[200px] h-[85vh]">
           <img
-            src={girlImg || "/placeholder.svg"}
+            src={ "/leftgirl.webp"}
             alt="Cartoon character"
             className="w-full h-full object-contain object-left-bottom"
           />
@@ -36,21 +29,21 @@ const EventsHero = ({ activeTab, setActiveTab }: EventsHeroProps) => {
 
         {/* Cartoon Characters - Right */}
         <div className="absolute right-0 bottom-0 w-1/4 max-w-xs h-auto">
-          <img src={monImg || "/placeholder.svg"} alt="Cartoon character" className="w-full h-auto" />
+          <img src={ "/monster.webp"} alt="Cartoon character" className="w-full h-auto" />
         </div>
 
         {/* Rocket Image - Bottom Right - Larger Size with Increased Opacity */}
         <div className="absolute right-[30%] -bottom-[14%] w-[40%] min-w-[150px] max-w-[300px] z-20">
-          <img src={rockyImg || "/placeholder.svg"} alt="Rocket" className="w-full h-auto animate-float opacity-100" />
+          <img src={"/rocket.webp"} alt="Rocket" className="w-full h-auto animate-float opacity-100" />
         </div>
 
         {/* gift Image - Bottom Right - Larger Size with Increased Opacity */}
         <div className="absolute right-[50%] bottom-[59%] w-[15%] min-w-[150px] max-w-[300px] z-20">
-          <img src={giftImg || "/placeholder.svg"} alt="Gift" className="w-full h-auto animate-float opacity-100" />
+          <img src={ "/gift.webp"} alt="Gift" className="w-full h-auto animate-float opacity-100" />
         </div>
 
         <div className="absolute right-[60%] bottom-[45%] w-[6%] min-w-[80px] max-w-[120px] z-20">
-          <img src={bubbleImg || "/placeholder.svg"} alt="Bubble" className="w-full h-auto animate-float opacity-100" />
+          <img src={"/bubble.webp"} alt="Bubble" className="w-full h-auto animate-float opacity-100" />
         </div>
 
         {/* Content Container */}
@@ -68,43 +61,43 @@ const EventsHero = ({ activeTab, setActiveTab }: EventsHeroProps) => {
         </div>
       </section>
 
-      {/* Full-width Tab Container */}
-      <div className="w-full bg-white py-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row gap-3 justify-center md:justify-start">
-            <button
-              onClick={() => setActiveTab("upcoming")}
-              className={`px-8 py-3 rounded-full font-bold text-sm shadow-lg transition-colors ${
-                activeTab === "upcoming"
-                  ? "bg-yellow-500 text-gray-900"
-                  : "bg-yellow-100 text-gray-800 hover:bg-yellow-200"
-              }`}
-            >
-              Upcoming Events
-            </button>
-            <button
-              onClick={() => setActiveTab("workshops")}
-              className={`px-8 py-3 rounded-full font-bold text-sm shadow-lg transition-colors ${
-                activeTab === "workshops"
-                  ? "bg-yellow-500 text-gray-900"
-                  : "bg-yellow-100 text-gray-800 hover:bg-yellow-200"
-              }`}
-            >
-              Workshops
-            </button>
-            <button
-              onClick={() => setActiveTab("special")}
-              className={`px-8 py-3 rounded-full font-bold text-sm shadow-lg transition-colors ${
-                activeTab === "special"
-                  ? "bg-yellow-500 text-gray-900"
-                  : "bg-yellow-100 text-gray-800 hover:bg-yellow-200"
-              }`}
-            >
-              Special Programs
-            </button>
-          </div>
-        </div>
-      </div>
+    {/* Full-width Tab Container */}
+<div className="w-full bg-white py-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col md:flex-row gap-6 justify-center md:justify-start"> {/* Increased gap from gap-3 to gap-6 */}
+      <button
+        onClick={() => setActiveTab("upcoming")}
+        className={`px-10 py-4 rounded-full font-bold text-base shadow-lg transition-colors ${
+          activeTab === "upcoming"
+            ? "bg-yellow-500 text-gray-900"
+            : "bg-yellow-100 text-gray-800 hover:bg-yellow-200"
+        }`}
+      >
+        Upcoming Events
+      </button>
+      <button
+        onClick={() => setActiveTab("workshops")}
+        className={`px-10 py-4 rounded-full font-bold text-base shadow-lg transition-colors ${
+          activeTab === "workshops"
+            ? "bg-yellow-500 text-gray-900"
+            : "bg-yellow-100 text-gray-800 hover:bg-yellow-200"
+        }`}
+      >
+        Workshops
+      </button>
+      <button
+        onClick={() => setActiveTab("special")}
+        className={`px-10 py-4 rounded-full font-bold text-base shadow-lg transition-colors ${
+          activeTab === "special"
+            ? "bg-yellow-500 text-gray-900"
+            : "bg-yellow-100 text-gray-800 hover:bg-yellow-200"
+        }`}
+      >
+        Special Programs
+      </button>
+    </div>
+  </div>
+</div>
     </div>
   )
 }

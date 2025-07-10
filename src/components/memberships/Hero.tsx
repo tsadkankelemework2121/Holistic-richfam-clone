@@ -1,5 +1,3 @@
-import back from "../../assets/memback.webp";
-
 
 const MembershipsHero = () => {
   return (
@@ -8,21 +6,21 @@ const MembershipsHero = () => {
   
   <div className="absolute inset-0">
            <img
-             src={back || "/placeholder.svg"}  // Removed .src
+             src={"/memback.webp"}  
              alt="Happy children at RICHFAM"
-             className="w-full h-full object-cover opacity-90"
+             className="w-full h-full object-cover opacity-100"
            />
          </div>
 
       
       
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+    
       
       {/* Compact content container */}
       <div className="relative h-full flex items-center justify-center p-4">
         <div className="max-w-2xl mx-auto px-4 text-center">
-         <p className="text-xl md:text-2xl text-white leading-relaxed mt-24 mb-8">
+         <p className="text-xl md:text-2xl text-white leading-relaxed mt-36 mb-8">
   Join our membership program to access exclusive benefits, from priority access to events and activities to
   specialized services for families.
 </p>

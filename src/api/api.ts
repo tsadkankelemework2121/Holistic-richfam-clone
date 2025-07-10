@@ -7,6 +7,39 @@ const api = axios.create({
   },
 })
 
+// Add request interceptor for debugging
+api.interceptors.request.use(
+  (config) => {
+    console.log(`🚀 Making API request to: ${config.baseURL}${config.url}`)
+    return config
+  },
+  (error) => {
+    console.error("❌ Request error:", error)
+    return Promise.reject(error)
+  },
+)
+
+// Add response interceptor for debugging
+api.interceptors.response.use(
+  (response) => {
+    console.log(`✅ API response received:`, {
+      url: response.config.url,
+      status: response.status,
+      data: response.data,
+    })
+    return response
+  },
+  (error) => {
+    console.error("❌ Response error:", {
+      url: error.config?.url,
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    })
+    return Promise.reject(error)
+  },
+)
+
 // Fetch events function
 export const fetchEvents = async () => {
   try {
@@ -36,16 +69,13 @@ export const fetchEventsByCategory = async (category) => {
         endpoint = "/event/category/upcoming-event"
     }
 
-    console.log(`Making API call to: ${api.defaults.baseURL}${endpoint}`)
+    console.log(`🔍 fetchEventsByCategory called with: ${category}`)
+    console.log(`📡 Making request to: ${endpoint}`)
+
     const response = await api.get(endpoint)
-    console.log(`API response for ${category}:`, response.data)
     return response.data
   } catch (error) {
-    console.error(`Error fetching ${category} events from ${endpoint}:`, error)
-    if (error.response) {
-      console.error("Response status:", error.response.status)
-      console.error("Response data:", error.response.data)
-    }
+    console.error(`❌ fetchEventsByCategory error for ${category}:`, error)
     throw error
   }
 }
@@ -53,10 +83,56 @@ export const fetchEventsByCategory = async (category) => {
 // Post membership function
 export const postMembership = async (membershipData) => {
   try {
+    console.log("🚀 Posting membership to: /membership/register")
+    console.log("📊 Payload:", membershipData)
+
     const response = await api.post("/membership/register", membershipData)
+    console.log("✅ Membership response:", response.data)
     return response.data
   } catch (error) {
-    console.error("Error posting membership:", error)
+    console.error("❌ Error posting membership:", error)
+    if (error.response) {
+      console.error("📋 Error status:", error.response.status)
+      console.error("📋 Error data:", error.response.data)
+    }
+    throw error
+  }
+}
+
+// Post booking function
+export const postBooking = async (bookingData) => {
+  try {
+    console.log("🚀 Posting booking to: /bookings")
+    console.log("📊 Payload:", bookingData)
+
+    const response = await api.post("/bookings", bookingData)
+    console.log("✅ Booking response:", response.data)
+    return response.data
+  } catch (error) {
+    console.error("❌ Error posting booking:", error)
+    if (error.response) {
+      console.error("📋 Error status:", error.response.status)
+      console.error("📋 Error data:", error.response.data)
+    }
+    throw error
+  }
+}
+
+// Post subscribe function
+export const postSubscribe = async (subscribeData) => {
+  try {
+    console.log("🚀 Posting subscription to: /subscribe")
+    console.log("📊 Payload:", subscribeData)
+
+    const response = await api.post("/subscribe", subscribeData)
+    console.log("✅ Subscribe response:", response.data)
+    return response.data
+  } catch (error) {
+    console.error("❌ Error posting subscription:", error)
+    if (error.response) {
+      console.error("📋 Error status:", error.response.status)
+      console.error("📋 Error data:", error.response.data)
+    }
     throw error
   }
 }

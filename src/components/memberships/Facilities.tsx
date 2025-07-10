@@ -1,7 +1,4 @@
-import safeFacilitiesImg from "../../assets/safe-facilities.png";
-import gamingAreasImg from "../../assets/gaming-areas.png";
-import learningProgramsImg from "../../assets/gaming-areas.png";
-import familyServicesImg from "../../assets/gaming-areas.png";
+
 
 
 const MembershipsFacilities = () => {
@@ -14,7 +11,7 @@ const MembershipsFacilities = () => {
             {/* Left Image Placeholder */}
             <div className="relative h-80 rounded-3xl overflow-hidden">
               <img 
-                src={safeFacilitiesImg} 
+                src={"/safe-facilities.png"} 
                 alt="Safe and family friendly facilities" 
                 className="w-full h-full object-cover"
               />
@@ -78,7 +75,7 @@ const MembershipsFacilities = () => {
             {/* Right Image Placeholder */}
             <div className="relative h-80 rounded-3xl overflow-hidden">
               <img 
-                src={gamingAreasImg} 
+                src={"/gaming-areas.png"} 
                 alt="Gaming and play areas" 
                 className="w-full h-full object-cover"
               />
@@ -92,7 +89,7 @@ const MembershipsFacilities = () => {
             {/* Left Image Placeholder */}
             <div className="relative h-80 rounded-3xl overflow-hidden">
               <img 
-                src={learningProgramsImg} 
+                src={"/learn.webp"} 
                 alt="Learning and development programs" 
                 className="w-full h-full object-cover"
               />
@@ -154,7 +151,7 @@ const MembershipsFacilities = () => {
             {/* Right Image Placeholder */}
             <div className="relative h-80 rounded-3xl overflow-hidden">
               <img 
-                src={familyServicesImg} 
+                src={"/family.webp"} 
                 alt="Comprehensive family services" 
                 className="w-full h-full object-cover"
               />
