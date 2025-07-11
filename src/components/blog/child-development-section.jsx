@@ -1,16 +1,18 @@
 "use client"
 
 import { useState } from "react"
-import api from "../../API/api"
 import { useQuery } from "@tanstack/react-query"
-import BlogCard from "./blog-card"
-import NavigationDots from "./navigation-dots"
+import api from "../../API/api"
+import BlogCard from "../blog/blog-card"
+import NavigationDots from "../blog/navigation-dots"
 
-function ChildDevelopmentSection() {
+export default function ChildDevelopmentSection() {
   const [currentPage, setCurrentPage] = useState(0)
+  const blogsPerPage = 3 // Number of blogs to display per page
 
   const fetchData = async () => {
     const response = await api.get("/blogs/category/child-development-tips")
+    // Assuming response.data directly contains the array of blogs
     return response.data
   }
 
@@ -24,6 +26,14 @@ function ChildDevelopmentSection() {
     setCurrentPage(pageIndex)
   }
 
+  // Determine total pages based on fetched data
+  const totalPages = data ? Math.ceil(data.length / blogsPerPage) : 0
+
+  // Get current page blogs - sorted by ID
+  const sortedBlogs = data?.sort((a, b) => a.id - b.id) || []
+  const startIndex = currentPage * blogsPerPage
+  const currentBlogs = sortedBlogs.slice(startIndex, startIndex + blogsPerPage)
+
   if (isLoading) {
     return (
       <section className="py-16 px-6 bg-[#F6F6F6]">
@@ -32,7 +42,7 @@ function ChildDevelopmentSection() {
           <div className="bg-white rounded-2xl shadow-lg p-8 mx-auto" style={{ width: "1306px", height: "535px" }}>
             <div className="h-full flex flex-col">
               <div className="flex-1 flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-[65px]">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-[65px]">
                   {[1, 2, 3].map((index) => (
                     <div
                       key={index}
@@ -77,25 +87,18 @@ function ChildDevelopmentSection() {
     )
   }
 
-  // Get current page blogs (3 per page) - sorted by ID
-  const blogsPerPage = 3
-  const sortedBlogs = data?.sort((a, b) => a.id - b.id) || []
-  const startIndex = currentPage * blogsPerPage
-  const currentBlogs = sortedBlogs.slice(startIndex, startIndex + blogsPerPage)
-
   return (
     <section className="py-16 px-6 bg-[#F6F6F6]">
       <div className="max-w-7xl mx-auto">
         {/* Section Title */}
         <h2 className="text-[37px] font-bold text-[#1E3A8A] text-left mb-8">Child Development Tips</h2>
-
         {/* White Container */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mx-auto" style={{ width: "1306px", height: "535px" }}>
           <div className="h-full flex flex-col">
             {/* Cards Container */}
             <div className="flex-1 flex items-center justify-center">
               {currentBlogs.length > 0 ? (
-                <div className="grid grid-cols-3 gap-[65px]">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-[65px]">
                   {currentBlogs.map((blog, index) => (
                     <BlogCard key={blog.id || index} blog={blog} index={index} />
                   ))}
@@ -107,16 +110,15 @@ function ChildDevelopmentSection() {
                 </div>
               )}
             </div>
-
-            {/* Navigation Dots - Always show 3 dots */}
-            <div className="flex justify-center mt-4">
-              <NavigationDots totalPages={3} currentPage={currentPage} onPageChange={handlePageChange} />
-            </div>
+            {/* Navigation Dots */}
+            {totalPages > 1 && ( // Only show dots if there's more than one page
+              <div className="flex justify-center mt-4">
+                <NavigationDots totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
+              </div>
+            )}
           </div>
         </div>
       </div>
     </section>
   )
 }
-
-export default ChildDevelopmentSection

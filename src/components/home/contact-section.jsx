@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 const ContactSection=()=> {
   return (
@@ -8,10 +9,10 @@ const ContactSection=()=> {
           mission, or supporting our initiative, feel free to get in touch.
         </p>
 
-        <button className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-8 py-2 rounded-full">
+        <Link to="/contact" className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-8 py-2 rounded-full">
           Contact Us
-        </button>
-      </div>
+        </Link>
+    </div>
     </section>
   )
 }

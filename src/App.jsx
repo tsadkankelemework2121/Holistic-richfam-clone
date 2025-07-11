@@ -9,13 +9,13 @@ import BlogDetail from "./components/blog/blog-detail"
 import CognitiveSkillsSection from "./components/games/cognitive-skills-section"
 import SocialSkillsSection from "./components/games/social-skills-section"
 import EmotionalSkillsSection from "./components/games/emotional-skills-section"
+import ContactUsPage from "./components/home/contactus"
 
-// Create Query Client instance
-const queryClient = new QueryClient()
+
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    
       <Router>
         <div className="min-h-screen flex flex-col">
           <Navbar />
@@ -23,6 +23,7 @@ function App() {
             <Routes>
               {/* Main Routes */}
               <Route path="/" element={<HomePage />} />
+               <Route path="/contact" element={<ContactUsPage />} />
               <Route path="/blogs" element={<BlogsPage />} />
 
               {/* Blog Detail Route */}
@@ -38,7 +39,7 @@ function App() {
           </main>
         </div>
       </Router>
-    </QueryClientProvider>
+
   )
 }
 

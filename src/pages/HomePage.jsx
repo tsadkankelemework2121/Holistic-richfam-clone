@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom"
 import AboutSection from "../components/home/about-section"
 import BlogSection from "../components/home/blog-section"
 import CenterSection from "../components/home/center-section"
@@ -21,6 +22,7 @@ const HomePage = () => {
      <MembershipSection /> 
      <SupportSection />
     <ContactSection />
+    <Outlet />
     </div>
   )
 }
