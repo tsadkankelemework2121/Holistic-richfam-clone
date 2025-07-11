@@ -25,7 +25,7 @@ const CenterSection = () => {
   return (
     <section className="py-16 px-6 bg-[#F6F6F6]">
       <div className="max-w-[1306px] mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#1E3A8A] text-left mb-8">
+        <h2 className="text-5xl md:text-5xl font-bold text-[#1E3A8A] text-left mb-8">
           RICHFAM Center
         </h2>
 

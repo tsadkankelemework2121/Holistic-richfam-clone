@@ -1,6 +1,4 @@
 import React from "react"
-
-
 const BlogHeroSection = () => {
   return (
     <section className="relative w-full h-[500px]">

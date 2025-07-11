@@ -1,20 +1,10 @@
 function NewsletterSection() {
   return (
     <section className="py-16 px-6 bg-white">
-      <div className="max-w-4xl mx-auto text-center">
-        <p
-          className="mx-auto mb-8 leading-relaxed"
-          style={{
-            fontSize: "32px",
-            color: "#1E3A8A",
-            fontFamily: "Arial",
-            maxWidth: "1136px",
-          }}
-        >
-          Stay informed with tips on family child development, parenting advice, and
-          
-          the vital role of play in a child's growth. You'll also receive updates on our
-                     upcoming events and workshops.
+      <div className="max-w-4xl mx-auto px-6 text-center">
+        <p className="text-[1E3A8A]-800 text-lg leading-relaxed mb-8">
+          Stay informed with tips on family child development, parenting advice, and the vital role of play in a child's
+          growth. You'll also receive news on our upcoming events and workshops.
         </p>
 
         <div className="mb-6">
