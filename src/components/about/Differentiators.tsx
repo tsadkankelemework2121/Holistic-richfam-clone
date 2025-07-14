@@ -1,5 +1,3 @@
-//import nImg from '../../assets/12.png';
-
 const AboutDifferentiators = () => {
   const differentiators = [
     {
