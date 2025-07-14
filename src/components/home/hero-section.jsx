@@ -2,7 +2,7 @@
 
 const HeroSection = () => {
   const handleContactClick = () => {
-    window.location.href = "mailto:ri"
+    window.location.href = "mailto:info@richfamcenter.com"
   }
 
   return (

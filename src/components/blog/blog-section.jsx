@@ -2,22 +2,29 @@
 
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import api from "../../API/api"
+import api from "../../API/api" 
 import BlogCard from "../blog/blog-card"
 import NavigationDots from "../blog/navigation-dots"
 
-export default function ChildDevelopmentSection() {
+function BlogSection({ category, title }) {
   const [currentPage, setCurrentPage] = useState(0)
-  const blogsPerPage = 3 // Number of blogs to display per page
+  const blogsPerPage = 3 // Number of blogs to display per page, as per screenshot
 
   const fetchData = async () => {
-    const response = await api.get("/blogs/category/child-development-tips")
-    // Assuming response.data directly contains the array of blogs
-    return response.data
+    try {
+      const response = await api.get(`/blogs/category/${category}`)
+    
+      console.log(`Fetched raw response for ${category}:`, response) 
+      console.log(`Extracted data for ${category}:`, response.data) 
+      return response.data
+    } catch (err) {
+      console.error(`Error fetching data for ${category}:`, err) 
+      throw err 
+    }
   }
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["child-development"],
+    queryKey: ["blogs", category], 
     queryFn: fetchData,
     staleTime: 10000,
   })
@@ -26,19 +33,26 @@ export default function ChildDevelopmentSection() {
     setCurrentPage(pageIndex)
   }
 
-  // Determine total pages based on fetched data
+ 
   const totalPages = data ? Math.ceil(data.length / blogsPerPage) : 0
-
-  // Get current page blogs - sorted by ID
-  const sortedBlogs = data?.sort((a, b) => a.id - b.id) || []
+  const sortedBlogs = data?.sort((a, b) => (Number(a.id) || 0) - (Number(b.id) || 0)) || []
   const startIndex = currentPage * blogsPerPage
   const currentBlogs = sortedBlogs.slice(startIndex, startIndex + blogsPerPage)
 
+  // Debug logs
+  console.log(`[${title}] - Full data (from useQuery):`, data)
+  console.log(`[${title}] - isLoading:`, isLoading)
+  console.log(`[${title}] - error:`, error)
+  console.log(`[${title}] - sortedBlogs:`, sortedBlogs)
+  console.log(`[${title}] - currentBlogs:`, currentBlogs)
+  console.log(`[${title}] - currentPage:`, currentPage)
+  console.log(`[${title}] - totalPages:`, totalPages)
+
   if (isLoading) {
     return (
-      <section className="py-16 px-6 bg-[#F6F6F6]">
+      <section className="py-16 px-6">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-[37px] font-bold text-[#1E3A8A] text-left mb-8">Child Development Tips</h2>
+          <h2 className="text-[37px] font-bold text-[#1E3A8A] text-left mb-8">{title}</h2>
           <div className="bg-white rounded-2xl shadow-lg p-8 mx-auto" style={{ width: "1306px", height: "535px" }}>
             <div className="h-full flex flex-col">
               <div className="flex-1 flex items-center justify-center">
@@ -73,14 +87,16 @@ export default function ChildDevelopmentSection() {
 
   if (error) {
     return (
-      <section className="py-16 px-6 bg-[#F6F6F6]">
+      <section className="py-16 px-6">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-[37px] font-bold text-[#1E3A8A] text-left mb-8">Child Development Tips</h2>
+          <h2 className="text-[37px] font-bold text-[#1E3A8A] text-left mb-8">{title}</h2>
           <div
             className="bg-white rounded-2xl shadow-lg p-8 mx-auto flex items-center justify-center"
             style={{ width: "1306px", height: "535px" }}
           >
-            <div className="text-center text-red-500">Error loading child development tips: {error.message}</div>
+            <div className="text-center text-red-500">
+              Error loading {title.toLowerCase()}: {error.message}
+            </div>
           </div>
         </div>
       </section>
@@ -88,10 +104,10 @@ export default function ChildDevelopmentSection() {
   }
 
   return (
-    <section className="py-16 px-6 bg-[#F6F6F6]">
+    <section className="py-16 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Section Title */}
-        <h2 className="text-[37px] font-bold text-[#1E3A8A] text-left mb-8">Child Development Tips</h2>
+        <h2 className="text-[37px] font-bold text-[#1E3A8A] text-left mb-8">{title}</h2>
         {/* White Container */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mx-auto" style={{ width: "1306px", height: "535px" }}>
           <div className="h-full flex flex-col">
@@ -122,3 +138,5 @@ export default function ChildDevelopmentSection() {
     </section>
   )
 }
+
+export default BlogSection

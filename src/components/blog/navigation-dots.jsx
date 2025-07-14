@@ -16,6 +16,7 @@ function NavigationDots({ totalPages = 3, currentPage = 0, onPageChange }) {
           className={`w-3 h-3 rounded-full transition-colors duration-200 ${
             currentPage === index ? "bg-[#1E3A8A]" : "bg-gray-300 hover:bg-gray-400"
           }`}
+          aria-label={`Go to page ${index + 1}`}
         />
       ))}
     </div>

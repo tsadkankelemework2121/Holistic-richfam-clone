@@ -1,22 +1,27 @@
-import Hero from "../components/blog/blog-hero-section"
-import ChildDevelopmentSection from "../components/blog/child-development-section"
-import ParentingTipsSection from "../components/blog/parenting-tips-section"
-import ImportanceOfPlaySection from "../components/blog/importance-of-play-section"
-import BottomSection from "../components/blog/newsletter-section"
-
-
-
-function Blogs() {
+import BlogSection from "../components/blog/blog-section" 
+import BlogHeroSection from "../components/blog/blog-hero-section"
+import NewsletterSection from "../components/blog/newsletter-section"
+function BlogPage() {
   return (
-    <div className="relative overflow-hidden">
-      <Hero />
-      <ChildDevelopmentSection />
-      <ParentingTipsSection />
-      <ImportanceOfPlaySection />
-      <BottomSection />
+  <div><BlogHeroSection />
+    <div className="bg-white min-h-screen py-12">
       
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <BlogSection category="child-development-tips" title="Child Development Tips" />
+
+        <BlogSection category="parenting-tips" title="Parenting Tips" />
+
+        <BlogSection category="importance-of-play" title="Importance of Play" />
+
+      
+      </div>
+      <div className="border-t border-black"></div>
+    </div>
+<NewsletterSection />
+<br/>
     </div>
   )
 }
 
-export default Blogs
+export default BlogPage

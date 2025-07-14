@@ -1,7 +1,6 @@
 "use client"
-
 import { useState } from "react"
-import api from "../../API/api" // Adjust path if necessary
+import api from "../../API/api"
 import { MapPin, Phone, Mail, Send, Twitter, Linkedin, Facebook } from "lucide-react"
 
 export default function ContactUsPage() {
@@ -29,10 +28,9 @@ export default function ContactUsPage() {
     setIsSubmitting(true)
     setSubmitSuccess(null)
     setSubmitError(null)
-
     try {
-      // Adjust the endpoint if your backend uses a different one for contact forms
-      const response = await api.post("/contact", formData)
+      
+      const response = await api.post("/request/submite", formData)
       console.log("Form submitted successfully:", response.data)
       setSubmitSuccess("Your message has been sent successfully!")
       setFormData({
@@ -46,17 +44,13 @@ export default function ContactUsPage() {
       console.error("Error submitting form:", error)
       setSubmitError("Failed to send message. Please try again later.")
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         console.error("Error data:", error.response.data)
         console.error("Error status:", error.response.status)
         setSubmitError(error.response.data.message || "Failed to send message. Please try again later.")
       } else if (error.request) {
-        // The request was made but no response was received
         console.error("No response received:", error.request)
         setSubmitError("No response from server. Please check your internet connection.")
       } else {
-        // Something happened in setting up the request that triggered an Error
         console.error("Error message:", error.message)
         setSubmitError("An unexpected error occurred. Please try again.")
       }
@@ -69,22 +63,38 @@ export default function ContactUsPage() {
     <div className="min-h-screen bg-[#2A438F] text-white">
       {/* Top section with background image and diagonal cut */}
       <div
-        className="relative h-[300px] md:h-[400px] bg-cover bg-center"
+        className="relative h-[642px] md:h-[400px] bg-cover bg-center"
         style={{
           backgroundImage: `url('/images/richfam-bg.png')`,
           clipPath: "polygon(0 0, 100% 0, 100% 85%, 0% 100%)", // Creates the diagonal cut
         }}
       >
-        {/* Overlay for text if needed, but screenshot implies text is part of image */}
-      </div>
+        {/* Top-left image */}
+        <img
+          src="/jasper.png?"
+          alt="Decorative image top left"
+          className="absolute left-[-78px] top-0 w-[408px] h-[642px] object-cover"
+        />
+        {/* Top-right image, 200px to the left */}
+       <img
+           src="/chuckerun.png"
+          alt="Decorative image top right"
+         className="absolute top-0 right-[100px] w-[309px]    h-[455px] opacity-[0.49]"
+/>
 
+        <img
+           src="/Group 39888.png"
+        alt="Decorative image center"
+         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1121px] h-[289px]"
+       />
+
+      </div>
       {/* Main content section */}
       <div className="container mx-auto px-4 py-8 md:py-16">
         <div className="text-center md:text-left mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-2">CONTACT US</h1>
           <p className="text-lg md:text-xl text-white/80">We are looking forward to hearing from you soon</p>
         </div>
-
         <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
           {/* Left Column: Contact Info & Social Media */}
           <div className="flex-1 w-full md:w-auto space-y-6 md:space-y-8">
@@ -100,7 +110,6 @@ export default function ContactUsPage() {
               <Mail className="text-[#FACC15] w-6 h-6" />
               <p className="text-lg">Info@Richfamcenter.Com</p>
             </div>
-
             {/* Social Media Icons */}
             <div className="flex gap-4 mt-8">
               <a href="#" aria-label="Telegram" className="text-[#FACC15] hover:scale-110 transition-transform">
@@ -117,7 +126,6 @@ export default function ContactUsPage() {
               </a>
             </div>
           </div>
-
           {/* Right Column: Contact Form */}
           <div className="flex-1 w-full md:w-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -166,10 +174,8 @@ export default function ContactUsPage() {
                 className="w-full bg-[#5C73B0] text-white placeholder:text-white/70 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FACC15] resize-y"
                 required
               ></textarea>
-
               {submitSuccess && <p className="text-green-400 text-center mt-4">{submitSuccess}</p>}
               {submitError && <p className="text-red-400 text-center mt-4">{submitError}</p>}
-
               <button
                 type="submit"
                 className="w-full md:w-auto bg-[#FACC15] text-black font-semibold px-8 py-3 rounded-lg hover:bg-yellow-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
